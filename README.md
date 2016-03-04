@@ -1,2 +1,3 @@
 # typeformPlugin
-type form Plugin
+
+Simple type forms integration 
