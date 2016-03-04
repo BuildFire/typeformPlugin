@@ -67,11 +67,11 @@ describe('Unit: typeFormPluginWidget app', function () {
 
       it('it should pass if  WidgetHome.onUpdateCallback is called for error', function () {
         var event = {
-          tag:TAG_NAMES.JOT_FORM_DATA
-        }
+          tag:TAG_NAMES.TYPE_FORM_DATA
+        };
         WidgetHome.data= {
           design:""
-        }
+        };
               WidgetHome.onUpdateCallback(event)
       });
 
@@ -81,8 +81,8 @@ describe('Unit: typeFormPluginWidget app', function () {
 
       it('should return the updated Url with filter returnUrl', function () {
         // Arrange.
-        var url = 'https://form.jotform.com/60068237709257', result;
-        var updatedUrl = 'https://form.jotform.com/60068237709257';
+        var url = 'https://sakshityagi.typeform.com/to/OjJrqw', result;
+        var updatedUrl = 'https://sakshityagi.typeform.com/to/OjJrqw';
         // Act.
         result = $filter('returnUrl')(url);});
 
