@@ -11,10 +11,23 @@
          */
         WidgetHome.init = function () {
           WidgetHome.success = function (result) {
-            WidgetHome.data = result.data;
-            if (!WidgetHome.data.content)
-              WidgetHome.data.content = {};
-            console.log(">>>>>", WidgetHome.data);
+            if (result.data && result.id) {
+              WidgetHome.data = result.data;
+              if (!WidgetHome.data.content)
+                WidgetHome.data.content = {};
+            } else {
+              WidgetHome.data = {
+                content: {}
+              };
+              var dummyData = JSON.parse(localStorage.getItem('typeFormData'));
+              if (dummyData && dummyData.url) {
+                WidgetHome.data.content.url = dummyData.url;
+              } else {
+                WidgetHome.data.content.url = "https://sakshityagi.typeform.com/to/OjJrqw";
+                localStorage.setItem('typeFormData', JSON.stringify({url: "https://sakshityagi.typeform.com/to/OjJrqw"}));
+              }
+            }
+
           };
           WidgetHome.error = function (err) {
             if (err && err.code !== STATUS_CODE.NOT_FOUND) {
