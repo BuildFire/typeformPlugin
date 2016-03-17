@@ -22,13 +22,8 @@
             ContentHome.TypeUrl = ContentHome.data.content.url;
           }
           else {
-            var dummyData = JSON.parse(localStorage.getItem('typeFormData'));
-            if (dummyData && dummyData.url) {
-              ContentHome.TypeUrl = ContentHome.data.content.url = dummyData.url;
-            } else {
-              ContentHome.TypeUrl = ContentHome.data.content.url = "https://sakshityagi.typeform.com/to/OjJrqw";
-              localStorage.setItem('typeFormData', JSON.stringify({url: "https://sakshityagi.typeform.com/to/OjJrqw"}));
-            }
+            var dummyData = {url: "https://sakshityagi.typeform.com/to/OjJrqw"};
+            ContentHome.TypeUrl = ContentHome.data.content.url = dummyData.url;
           }
         };
         ContentHome.error = function (err) {
