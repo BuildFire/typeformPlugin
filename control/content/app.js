@@ -14,12 +14,16 @@
       /*Init method call, it will bring all the pre saved data*/
       ContentHome.init = function () {
         ContentHome.success = function (result) {
-          console.info('init success result:', result);
-          if (result) {
+          console.info('init success result:>>>>>>>>>>>>>>>>>>', result);
+          if (result.data && result.id) {
             ContentHome.data = result.data;
             if (!ContentHome.data.content)
               ContentHome.data.content = {};
             ContentHome.TypeUrl = ContentHome.data.content.url;
+          }
+          else {
+            var dummyData = {url: "https://sakshityagi.typeform.com/to/OjJrqw"};
+            ContentHome.TypeUrl = ContentHome.data.content.url = dummyData.url;
           }
         };
         ContentHome.error = function (err) {
@@ -27,7 +31,7 @@
             console.error('Error while getting data', err);
           }
           else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-            ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.TYPE_FORM_DATA);
+            // ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.TYPE_FORM_DATA);
           }
         };
         DataStore.get(TAG_NAMES.TYPE_FORM_DATA).then(ContentHome.success, ContentHome.error);

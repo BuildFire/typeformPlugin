@@ -79,19 +79,18 @@ describe('Unit: typeFormPluginContent content app', function () {
       it('it should pass if ContentHome.init is called', function () {
 
         ContentHome.init();
-        var result  = true;
         ContentHome.error(null);
       });
 
       it('it should pass if ContentHome.init is called', function () {
         ContentHome.dummydata = {
           content:{
-            url:null
+            url:"https://sakshityagi.typeform.com/to/OjJrqw"
           }
         };
         ContentHome.init();
-        var data = {};
-        ContentHome.success();
+        var result = {data : {}};
+        ContentHome.success(result);
         expect(ContentHome.data).toEqual(ContentHome.dummydata)
       });
     });
