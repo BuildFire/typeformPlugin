@@ -11,80 +11,110 @@
       };
       ContentHome.isUrlValidated = null;
       ContentHome.TypeUrl = null;
+      
       /*Init method call, it will bring all the pre saved data*/
       ContentHome.init = function () {
-        ContentHome.success = function (result) {
-          console.info('init success result:>>>>>>>>>>>>>>>>>>', result);
+       
+        var success = function (result) {
+          console.info('init success result:', result);
           if (result.data && result.id) {
             ContentHome.data = result.data;
-            if (!ContentHome.data.content)
-              ContentHome.data.content = {};
-            ContentHome.TypeUrl = ContentHome.data.content.url;
+            if (!ContentHome.data.content){
+                ContentHome.data.content = {
+                  url: null
+                };
+            }
           }
           else {
-            var dummyData = {url: "https://sakshityagi.typeform.com/to/OjJrqw"};
-            ContentHome.TypeUrl = ContentHome.data.content.url = dummyData.url;
+
+            var dummyData = {
+              url: null
+            };
+
+             ContentHome.data.content.url = dummyData.url;
           }
+
+          if (ContentHome.data.content.url){
+            ContentHome.TypeUrl = ContentHome.data.content.url;
+          } 
+          // esle here it seems that empty form was saved, ignore...
+          
         };
-        ContentHome.error = function (err) {
+
+        var error = function (err) {
           if (err && err.code !== STATUS_CODE.NOT_FOUND) {
             console.error('Error while getting data', err);
           }
           else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-            // ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.TYPE_FORM_DATA);
+             ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.TYPE_FORM_DATA);
           }
         };
-        DataStore.get(TAG_NAMES.TYPE_FORM_DATA).then(ContentHome.success, ContentHome.error);
+
+        DataStore.get(TAG_NAMES.TYPE_FORM_DATA).then(success, error);
       };
+
       ContentHome.init();
 
+      ContentHome.testUrlByPattern = function(url) {
+        url = url || 'bad-url'; 
+        return /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/.test(url);
+      }
 
       ContentHome.validateUrl = function () {
         //  var result =
-        ContentHome.success = function (result) {
-          console.log("?????????", result);
-          if (result) {
+        var success = function (result) {
+          console.log("success:", result);
+          if (result!==null) {
             ContentHome.isUrlValidated = true;
             ContentHome.data.content.url = ContentHome.TypeUrl;
+            
             ContentHome.saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.TYPE_FORM_DATA);
           }
         };
-        ContentHome.error = function (err) {
-          ContentHome.isUrlValidated = false;
-          console.log("?????????error", err)
-        };
-        $timeout(function () {
-          ContentHome.isUrlValidated = null;
-        }, 3000);
 
-        if ((/typeform.com/).test(ContentHome.TypeUrl)) {
-          Utils.validateUrl(ContentHome.TypeUrl).then(ContentHome.success, ContentHome.error);
+        var error = function (err) {
+          ContentHome.isUrlValidated = false;
+          console.log("error", err);
+
+          $timeout(function(){ ContentHome.isUrlValidated = null; }, 3000);
+        };
+
+        if (ContentHome.testUrlByPattern(ContentHome.TypeUrl)) { 
+              //test for url validity...          
+            console.log("checking:>>>" + ContentHome.TypeUrl);
+            Utils.validateUrl(ContentHome.TypeUrl).then(success, error);
+
         }
         else {
-          ContentHome.error(new Error("Url format not valid"));
+
+          error(new Error("Url format not valid"));
+
+          ContentHome.isUrlValidated = false;
+
+        
         }
       };
 
       ContentHome.saveData = function (newObj, tag) {
-        if (typeof newObj === 'undefined') {
+        if (typeof newObj === 'undefined' || newObj === null) {
+          console.warn('Saving empty data?!');
           return;
         }
-        ContentHome.success = function (result) {
+
+        DataStore.save(newObj, tag).then(function (result) {
           console.info('Saved data result: ', result);
           // updateMasterItem(newObj);
-        };
-        ContentHome.error = function (err) {
+        },function (err) {
           console.error('Error while saving data : ', err);
-        };
-        DataStore.save(newObj, tag).then(ContentHome.success, ContentHome.error);
+        });
       };
 
       /*
        * Method to clear TypeForm feed url
        * */
       ContentHome.clearData = function () {
-        if (!ContentHome.TypeUrl) {
-          ContentHome.data.content.url = null;
+        if (!ContentHome.TypeUrl){  
+          Object.apply(ContentHome.data,{content:{url: null}});
           ContentHome.saveData(ContentHome.data.content, TAG_NAMES.TYPE_FORM_DATA)
         }
       };
