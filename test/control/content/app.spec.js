@@ -59,40 +59,63 @@ describe('Unit: typeFormPluginContent content app', function () {
       it('it should pass if ContentHome is defined', function () {
         expect(ContentHome).not.toBeUndefined();
       });
+      
       it('it should pass if clearData is called', function () {
         ContentHome.clearData();
       });
 
-      it('it should pass if ContentHome.validateUrl is called with success', function () {
-
-        ContentHome.validateUrl();
-        var result  = true;
-        ContentHome.success(result);
+      it('ContentHome.validateUrl is defined', function () {
+        expect(ContentHome.validateUrl).toBeDefined();
       });
 
-      it('it should pass if ContentHome.validateUrl is called with error', function () {
-
-        ContentHome.validateUrl();
-        ContentHome.error(null);
+      it('ContentHome.testUrlByPattern', function () {
+        expect(ContentHome.testUrlByPattern).toBeDefined();
+      });
+      
+      it('it should validate url by pattern, covering URI formats', function() {
+        expect(ContentHome.testUrlByPattern(null)).toBe(false);
+        expect(ContentHome.testUrlByPattern('https://sakshityagi.typeform.com/to/OjJrqw')).toBe(true);
       });
 
-      it('it should pass if ContentHome.init is called', function () {
+      it('it should pass with initial state set to ContentHome instance', function () {
+        
+        expect(
+            ContentHome.init
+          ).toBeDefined();
+          
+          expect(ContentHome.getInitialState()).toBe(ContentHome);
 
+      });
+
+      it('it pass since no typed url to validate against', function () {
+        
         ContentHome.init();
-        ContentHome.error(null);
+        expect(ContentHome.validateUrl()).toBe(false);  
+        expect(ContentHome.isUrlValidated).toEqual(false);
+        expect(ContentHome.TypeUrl).toBeNull();
+
       });
 
-      it('it should pass if ContentHome.init is called', function () {
-        ContentHome.dummydata = {
-          content:{
-            url:"https://sakshityagi.typeform.com/to/OjJrqw"
-          }
-        };
-        ContentHome.init();
-        var result = {data : {}};
-        ContentHome.success(result);
-        expect(ContentHome.data).toEqual(ContentHome.dummydata)
+      it('it should pass with validating of a given url', function () {
+        
+        var url =  "https://sakshityagi.typeform.com/to/OjJrqw";
+        //such url should pass validation?
+        //TODO: fill in more specific tests for misspelled urls... 
+        
+        ContentHome.TypeUrl = url;
+        expect(ContentHome.validateUrl()).toBe(true);  
+        
       });
+
+      it('it should validate against ContentHome.TypeUrl', function(){
+
+        ContentHome.TypeUrl = null;
+        expect(ContentHome.validateUrl()).toBe(false);  
+
+        ContentHome.TypeUrl =  "https://sakshityagi.typeform.com/to/OjJrqw" ;
+        expect(ContentHome.validateUrl()).toBe(true);
+      });
+
     });
 
   });
