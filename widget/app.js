@@ -14,13 +14,29 @@
             if (result.data && result.id) {
               WidgetHome.data = result.data;
               if (!WidgetHome.data.content)
-                WidgetHome.data.content = {};
+              WidgetHome.data.content = {};
+              else{
+                if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                  buildfire.actionItems.execute({
+                    title: "TypeForm",
+                    url: WidgetHome.data.content.url,
+                    action: "linkToWeb",
+                    openIn: "_system",
+                  },
+                  (err) => {
+                    if (err) return console.error(err);
+                  }
+                );
+                }
+              }
+                // right here
             } else {
               WidgetHome.data = {
                 content: {}
               };
               var dummyData = {url: "https://sakshityagi.typeform.com/to/OjJrqw"};
               WidgetHome.data.content.url = dummyData.url;
+              
             }
           };
           WidgetHome.error = function (err) {

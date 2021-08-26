@@ -8,6 +8,7 @@
   <link href="../../../styles/siteIcons.css" rel="stylesheet">
 
   <!-- JS -->
+  <script src="//embed.typeform.com/next/embed.js"></script>
   <script src="../../../scripts/buildfire.js"></script>
   <script src="../../../scripts/angular/angular.min.js"></script>
   <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
@@ -17,11 +18,23 @@
 </head>
 <body>
 <div class="content"
+     id="container"
      style="-webkit-overflow-scrolling: touch !important;overflow: auto; height: 100%;"
      ng-controller="WidgetHomeCtrl as WidgetHome">
   <iframe src="{{WidgetHome.data.content.url | returnUrl}}"
           ng-if="WidgetHome.data.content.url"
           style="height: 100%;position: relative"></iframe>
+
+  <script>
+    let timer;
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      document.getElementById("container").style.display = "none";
+      timer = setTimeout(() => {
+        buildfire.navigation.navigateHome();
+        clearTimeout(timer)
+      }, 1000);
+    }
+  </script>
 </div>
 </body>
 </html>
