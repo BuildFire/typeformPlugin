@@ -16,7 +16,7 @@
               if (!WidgetHome.data.content)
               WidgetHome.data.content = {};
               else{
-                if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                if(!buildfire.isWeb()) {
                   buildfire.actionItems.execute({
                     title: "TypeForm",
                     url: WidgetHome.data.content.url,
