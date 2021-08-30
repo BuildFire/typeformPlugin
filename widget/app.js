@@ -29,7 +29,7 @@
                 );
                 }
               }
-                // right here
+              
             } else {
               WidgetHome.data = {
                 content: {}
