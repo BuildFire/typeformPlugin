@@ -21,7 +21,7 @@
                     title: "TypeForm",
                     url: WidgetHome.data.content.url,
                     action: "linkToWeb",
-                    openIn: "_system",
+                    openIn: "_blank",
                   },
                   (err) => {
                     if (err) return console.error(err);
