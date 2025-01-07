@@ -1,7 +1,7 @@
 {
   "author": "Buildfire",
-  "pluginName": "Type Form",
-  "pluginDescription": "Effortlessly collect and manage data with TypeForm's simplicity",
+  "pluginName": "Typeform",
+  "pluginDescription": "Collect and manage data effortlessly with TypeForm's simple, user-friendly interface, making surveys and forms easy to create and analyze.",
   "supportEmail": "support@buildfire.com",
   "supportSite":"http://learn.appdocumentation.com/plugin-tutorials/type-form-plugin-tutorial",
   "control": {
